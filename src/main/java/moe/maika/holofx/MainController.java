@@ -18,16 +18,70 @@
  */
 package moe.maika.holofx;
 
+import java.awt.Frame;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Iterator;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class MainController {
+
+    private static final String API_KEY_FILE = "apikey.txt";
+
     @FXML
     private Button connectAndRefreshButton;
 
+    private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
+    private String apiKey;
+
+    public MainController() {
+        httpClient = HttpClient.newHttpClient();
+        objectMapper = new ObjectMapper();
+        try {
+            apiKey = Files.readString(Paths.get(API_KEY_FILE));
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @FXML
     private void buttonClicked() {
-        System.out.println("PINGED!");
+        queryHolodex();
+    }
+
+    private void queryHolodex() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://holodex.net/api/v2/live"))
+                .header("X-APIKEY", apiKey)
+                .build();
+        httpClient.sendAsync(request, BodyHandlers.ofString(Charset.forName("utf8")))
+                .thenApply(HttpResponse::body)
+                .thenAccept(str -> {
+                    try {
+                        JsonNode array = objectMapper.readTree(str);
+                        for(Iterator<JsonNode> iter = array.iterator(); iter.hasNext();) {
+                            JsonNode node = iter.next();
+                            Frame frame = objectMapper.readValue(node.toString(), Frame.class);
+                        }
+                    }
+                    catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
     }
     
 }
