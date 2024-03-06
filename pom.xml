@@ -89,6 +89,12 @@
                     </bundlesList>
                     <reflectionList>
                         <list>moe.maika.holofx.MainController</list>
+                        <list>com.fasterxml.jackson.databind.PropertyNamingStrategies$SnakeCaseStrategy</list>
+                        <list>com.fasterxml.jackson.databind.EnumNamingStrategies$CamelCaseStrategy</list>
+                        <list>moe.maika.holofx.json.Frame</list>
+                        <list>moe.maika.holofx.json.Type</list>
+                        <list>moe.maika.holofx.json.Status</list>
+                        <list>moe.maika.holofx.json.Channel</list>
                     </reflectionList>
                 </configuration>
             </plugin>
