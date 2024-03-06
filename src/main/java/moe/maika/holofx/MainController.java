@@ -28,13 +28,18 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import moe.maika.holofx.json.Frame;
 
 public class MainController {
@@ -43,6 +48,8 @@ public class MainController {
 
     @FXML
     private Button connectAndRefreshButton;
+    @FXML
+    private VBox streamBox;
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
@@ -63,7 +70,14 @@ public class MainController {
 
     @FXML
     private void buttonClicked() {
+        connectAndRefreshButton.setDisable(true);
+        connectAndRefreshButton.setText("Refreshing");
         queryHolodex();
+    }
+
+    private void resetButton() {
+        connectAndRefreshButton.setDisable(false);
+        connectAndRefreshButton.setText("Refresh");
     }
 
     private void queryHolodex() {
@@ -77,13 +91,31 @@ public class MainController {
                     try {
                         List<Frame> frames = objectMapper.readValue(str,
                                 objectMapper.getTypeFactory().constructCollectionType(List.class, Frame.class));
-                        frames.stream()
+                        List<Frame> goodStreams = frames.stream()
                                 .filter(f -> "hololive".equalsIgnoreCase(f.channel().org()))
                                 .filter(f -> !f.channel().suborg().toLowerCase().contains("holostars"))
-                                .forEach(f -> System.out.println(String.format("%s: %s", f.channel().englishName(), f.title())));
+                                .collect(Collectors.toList());
+                                //.forEach(f -> System.out.println(String.format("%s: %s", f.channel().englishName(), f.title())));
+                        Platform.runLater(() -> {
+                            streamBox.getChildren().clear();
+                            goodStreams.forEach(stream -> {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("stream.fxml"));
+                                try {
+                                    Node element = loader.load();
+                                    StreamController controller = loader.getController();
+                                    controller.setTitle(stream.title());
+                                    controller.setStreamerName(stream.channel().englishName());
+                                    streamBox.getChildren().add(element);
+                                }
+                                catch(Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            });
+                        });
                     }
                     catch(Exception ex) {
                         ex.printStackTrace();
+                        Platform.runLater(() -> resetButton());
                     }
                 });
     }

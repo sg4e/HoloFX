@@ -20,6 +20,9 @@
             <Insets bottom="10.0" top="5.0" />
          </VBox.margin>
       </HBox>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox fx:id="streamBox" />
+         </content></ScrollPane>
    </children>
 </VBox>
