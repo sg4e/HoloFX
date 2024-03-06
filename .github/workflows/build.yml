@@ -93,10 +93,16 @@ jobs:
 
   build-mac:
     name: Build for MacOS (x64)
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
         # Checkout your code
         - uses: actions/checkout@v4
+
+        - name: Setup Maven Action
+          uses: s4u/setup-maven-action@v1.12.0
+          with:
+            java-version: '21'
+            maven-version: '3.8.8'
 
         # Set up GraalVM for non-Maven projects
         - name: Set up GraalVM
