@@ -22,6 +22,7 @@ package moe.maika.holofx;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -30,6 +31,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("HoloFX");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("holo.png")));
+
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
         VBox mainVbox = mainLoader.load();
         
