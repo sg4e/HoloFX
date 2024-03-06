@@ -98,10 +98,6 @@ jobs:
         # Checkout your code
         - uses: actions/checkout@v4
 
-        # Install extra required packaged on top of ubuntu-latest
-        - name: Install libraries
-          run: sudo apt install libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev
-
         # Set up GraalVM for non-Maven projects
         - name: Set up GraalVM
           uses: graalvm/setup-graalvm@v1
