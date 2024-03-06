@@ -93,7 +93,7 @@ jobs:
 
   build-mac:
     name: Build for MacOS (x64)
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
         # Checkout your code
         - uses: actions/checkout@v4
@@ -113,7 +113,7 @@ jobs:
         # Build your project using Maven with GraalVM
         # The desktop profile is used, which means a native build will be created for the host platform (in this case Linux) itself.
         - name: Gluon Build
-          run: ./mvnw -Pdesktop gluonfx:build gluonfx:package
+          run: mvn -Pdesktop gluonfx:build gluonfx:package
 
         # Copy the native binary to the staging directory
         - name: Copy native image to staging
