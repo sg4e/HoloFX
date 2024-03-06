@@ -110,6 +110,9 @@ jobs:
         - name: Publish release
           uses: softprops/action-gh-release@v1
           with:
+            files: |
+              HoloFX-linux.zip
+              HoloFX-windows.zip
             fail_on_unmatched_files: true
             prerelease: false
             draft: false
