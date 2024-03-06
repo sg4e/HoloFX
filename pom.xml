@@ -85,13 +85,13 @@
                 <configuration>
                     <target>${gluonfx.target}</target>
                     <mainClass>${main.class}</mainClass>
+                    <verbose>true</verbose>
                     <bundlesList>
                     </bundlesList>
                     <reflectionList>
                         <list>moe.maika.holofx.MainController</list>
                         <list>com.fasterxml.jackson.databind.PropertyNamingStrategies$SnakeCaseStrategy</list>
                         <list>com.fasterxml.jackson.databind.EnumNamingStrategies$CamelCaseStrategy</list>
-                        <list>org.graalvm.nativeimage.Platform$DARWIN_AMD64</list>
                         <list>moe.maika.holofx.json.Frame</list>
                         <list>moe.maika.holofx.json.Type</list>
                         <list>moe.maika.holofx.json.Status</list>
