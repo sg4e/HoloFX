@@ -85,7 +85,6 @@
                 <configuration>
                     <target>${gluonfx.target}</target>
                     <mainClass>${main.class}</mainClass>
-                    <verbose>true</verbose>
                     <bundlesList>
                     </bundlesList>
                     <reflectionList>
