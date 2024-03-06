@@ -18,7 +18,6 @@
  */
 package moe.maika.holofx;
 
-import java.awt.Frame;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -28,13 +27,15 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
+import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import moe.maika.holofx.json.Frame;
 
 public class MainController {
 
@@ -50,6 +51,8 @@ public class MainController {
     public MainController() {
         httpClient = HttpClient.newHttpClient();
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             apiKey = Files.readString(Paths.get(API_KEY_FILE));
         }
@@ -72,11 +75,12 @@ public class MainController {
                 .thenApply(HttpResponse::body)
                 .thenAccept(str -> {
                     try {
-                        JsonNode array = objectMapper.readTree(str);
-                        for(Iterator<JsonNode> iter = array.iterator(); iter.hasNext();) {
-                            JsonNode node = iter.next();
-                            Frame frame = objectMapper.readValue(node.toString(), Frame.class);
-                        }
+                        List<Frame> frames = objectMapper.readValue(str,
+                                objectMapper.getTypeFactory().constructCollectionType(List.class, Frame.class));
+                        frames.stream()
+                                .filter(f -> "hololive".equalsIgnoreCase(f.channel().org()))
+                                .filter(f -> !f.channel().suborg().toLowerCase().contains("holostars"))
+                                .forEach(f -> System.out.println(String.format("%s: %s", f.channel().englishName(), f.title())));
                     }
                     catch(Exception ex) {
                         ex.printStackTrace();

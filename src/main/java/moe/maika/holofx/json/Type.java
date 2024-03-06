@@ -18,6 +18,10 @@
  */
 package moe.maika.holofx.json;
 
+import com.fasterxml.jackson.databind.EnumNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.EnumNaming;
+
+@EnumNaming(EnumNamingStrategies.CamelCaseStrategy.class)
 public enum Type {
     STREAM,
     CLIP

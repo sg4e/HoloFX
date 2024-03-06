@@ -18,12 +18,17 @@
  */
 package moe.maika.holofx.json;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record Channel(
+    @JsonProperty("english_name")
     String englishName,
     String id,
     String name,
     String photo,
-    String type
+    String type,
+    String org,
+    String suborg
 ) {
     /*
      {
