@@ -22,7 +22,7 @@
       </HBox>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <content>
-            <VBox fx:id="streamBox" />
+            <VBox fx:id="streamBox" spacing="3.0" />
          </content></ScrollPane>
    </children>
 </VBox>

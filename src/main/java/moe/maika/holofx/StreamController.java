@@ -18,8 +18,10 @@
  */
 package moe.maika.holofx;
 
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class StreamController {
@@ -30,9 +32,12 @@ public class StreamController {
     @FXML
     private Label centerLabel;
 
+    private String link;
+    private HostServices hostServices;
+
     @FXML
     private void onClick() {
-
+        hostServices.showDocument(String.format("https://holodex.net/watch/%s", link));
     }
 
     public void setTitle(String title) {
@@ -41,5 +46,14 @@ public class StreamController {
 
     public void setStreamerName(String name) {
         topLabel.setText(name);
+    }
+
+    public void setImage(Image img) {
+        image.setImage(img);
+    }
+
+    public void setLink(String link, HostServices hostServices) {
+        this.link = link;
+        this.hostServices = hostServices;
     }
 }

@@ -35,6 +35,8 @@ public class Main extends Application {
 
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
         VBox mainVbox = mainLoader.load();
+        MainController controller = mainLoader.getController();
+        controller.setHostServices(getHostServices());
         
         Scene scene = new Scene(mainVbox);
         stage.setScene(scene);

@@ -34,11 +34,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import moe.maika.holofx.json.Frame;
 
@@ -54,6 +56,7 @@ public class MainController {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private String apiKey;
+    private HostServices hostServices;
 
     public MainController() {
         httpClient = HttpClient.newHttpClient();
@@ -66,6 +69,10 @@ public class MainController {
         catch(IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
     }
 
     @FXML
@@ -105,11 +112,20 @@ public class MainController {
                                     StreamController controller = loader.getController();
                                     controller.setTitle(stream.title());
                                     controller.setStreamerName(stream.channel().englishName());
+                                    controller.setLink(stream.id(), hostServices);
                                     streamBox.getChildren().add(element);
+                                    HttpRequest req = HttpRequest.newBuilder(URI.create(stream.channel().photo())).build();
+                                    httpClient.sendAsync(req, BodyHandlers.ofInputStream())
+                                            .thenApply(HttpResponse::body)
+                                            .thenAccept(is -> {
+                                                Image img = new Image(is);
+                                                Platform.runLater(() -> controller.setImage(img));
+                                            });
                                 }
                                 catch(Exception ex) {
                                     ex.printStackTrace();
                                 }
+                                resetButton();
                             });
                         });
                     }

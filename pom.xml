@@ -96,6 +96,9 @@
                         <list>moe.maika.holofx.json.Type</list>
                         <list>moe.maika.holofx.json.Status</list>
                         <list>moe.maika.holofx.json.Channel</list>
+                        <list>javafx.scene.control.ScrollPane</list>
+                        <list>javafx.scene.layout.VBox</list>
+                        <list>javafx.scene.Cursor</list>
                     </reflectionList>
                 </configuration>
             </plugin>

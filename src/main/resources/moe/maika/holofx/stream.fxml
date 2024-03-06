@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onClick" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="moe.maika.holofx.StreamController">
-   <left>
-      <ImageView fx:id="image" fitHeight="56.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+<HBox onMouseClicked="#onClick" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="moe.maika.holofx.StreamController">
+   <children>
+      <ImageView fx:id="image" fitHeight="56.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@holo.png" />
-         </image></ImageView>
-   </left>
-   <top>
-      <Label fx:id="topLabel" text="Label" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-   </top>
-   <center>
-      <Label fx:id="centerLabel" text="Label" wrapText="true" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+         <children>
+            <VBox>
+               <children>
+                  <Label fx:id="topLabel" maxWidth="1.7976931348623157E308" text="Label">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Label fx:id="centerLabel" maxHeight="1.7976931348623157E308" text="label" wrapText="true" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+</HBox>
